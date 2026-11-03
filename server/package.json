@@ -1,0 +1,1 @@
+{"dependencies":{"express":"^4.19.2"},"description":"Node.js + Express + SQLite back end with authentication for Haven Desk Collective — course-track step 4 (Full-Stack Web Development Bootcamp): authentication flow, hashed passwords, and sessions.","main":"server.js","name":"haven-desk-collective-server","scripts":{"start":"node server.js"},"version":"1.0.0"}
