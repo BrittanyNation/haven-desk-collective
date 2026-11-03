@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My account — Haven Desk Collective</title>
+<meta name="description" content="Create a Haven Desk Collective account, sign in, manage your bookings, saved spaces, and password.">
+<meta property="og:title" content="My account — Haven Desk Collective">
+<meta property="og:description" content="Sign-up, sign-in, sessions and a members dashboard — the authentication project in Brittany Nation's portfolio.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://brittanynation.github.io/haven-desk-collective/og-image.png">
+<meta property="og:url" content="https://brittanynation.github.io/haven-desk-collective/account.html">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23232946'/><text x='50' y='68' font-size='56' text-anchor='middle' fill='%23FFC857'>H</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="mode-banner" id="modeBanner">Checking connection…</div>
+<header class="site"><div class="wrap nav">
+  <a class="logo" href="index.html">Haven <span>Desk</span> Collective</a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="spaces.html">Spaces &amp; pricing</a>
+    <a href="account.html" aria-current="page">My account</a>
+    <span id="authNav"></span>
+  </nav>
+</div></header>
+
+<main class="wrap">
+<!-- ============ SIGNED-OUT: AUTH FORMS ============ -->
+<section id="authSection">
+  <div style="max-width:560px;margin:0 auto">
+    <div class="section-head"><h1 style="font-size:2rem">Members door</h1>
+    <p>Create an account or sign in. Booking, saved spaces and your dashboard live behind this door — and only your bookings show on yours.</p></div>
+    <div class="alert info show" id="returnNotice" hidden></div>
+    <div class="panel">
+      <div class="tabs" role="tablist" aria-label="Sign in or create account">
+        <button class="tab" id="tabSignin" role="tab" aria-selected="true">Sign in</button>
+        <button class="tab" id="tabSignup" role="tab" aria-selected="false">Create account</button>
+      </div>
+
+      <form id="signinForm" novalidate>
+        <div class="alert error" id="signinErrors" role="alert"></div>
+        <div class="field"><label for="siEmail">Email</label><input id="siEmail" type="email" autocomplete="email" placeholder="you@example.com"></div>
+        <div class="field"><label for="siPassword">Password</label><input id="siPassword" type="password" autocomplete="current-password" placeholder="Your password">
+          <p class="hint"><label class="check" style="font-weight:400"><input type="checkbox" id="siShow"> Show password</label></p></div>
+        <button class="btn" type="submit" style="width:100%">Sign in</button>
+        <p class="hint" style="margin-top:12px">Just looking? Use the demo account — <button type="button" class="btn small secondary" id="fillDemo">Fill demo login</button><br><span class="muted">demo@haven.example / HavenDemo1 (Regular plan, 15% saving)</span></p>
+      </form>
+
+      <form id="signupForm" novalidate hidden>
+        <div class="alert error" id="signupErrors" role="alert"></div>
+        <div class="field"><label for="suName">Your name</label><input id="suName" type="text" autocomplete="name" placeholder="e.g. Jordan Lee"><p class="error-text" id="errSuName"></p></div>
+        <div class="field"><label for="suEmail">Email</label><input id="suEmail" type="email" autocomplete="email" placeholder="you@example.com"><p class="error-text" id="errSuEmail"></p></div>
+        <div class="field"><label for="suPassword">Password</label><input id="suPassword" type="password" autocomplete="new-password" placeholder="At least 8 characters, with a number">
+          <div class="strength" aria-hidden="true"><i id="pwBar"></i></div>
+          <p class="hint" id="pwHint">Use 8+ characters with letters and a number.</p><p class="error-text" id="errSuPw"></p></div>
+        <div class="field"><label for="suConfirm">Password again</label><input id="suConfirm" type="password" autocomplete="new-password" placeholder="Repeat it"><p class="error-text" id="errSuConfirm"></p></div>
+        <div class="field"><label for="suPlan">Plan</label>
+          <select id="suPlan">
+            <option value="payg">Day Tripper — free, pay as you go</option>
+            <option value="regular">Regular — $149/mo, 15% off bookings</option>
+            <option value="resident">Resident — $289/mo, 25% off bookings</option>
+          </select></div>
+        <div class="field"><label class="check"><input type="checkbox" id="suTerms"> I agree to the loft house rules: be kind, leave spaces tidy, no surprise guests.</label><p class="error-text" id="errSuTerms"></p></div>
+        <button class="btn mint" type="submit" style="width:100%">Create my account</button>
+        <p class="hint">Your password is hashed before it is stored — the loft team can never read it.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SIGNED-IN: DASHBOARD ============ -->
+<section id="dashSection" hidden>
+  <div class="section-head"><h1 style="font-size:2rem" id="dashHello">Welcome back</h1><p id="dashSub"></p></div>
+  <div class="stat-band" style="margin:0 0 26px">
+    <div class="stat"><div class="num" id="dBookings">0</div><div>Active bookings</div></div>
+    <div class="stat"><div class="num" id="dHours">0</div><div>Hours booked</div></div>
+    <div class="stat"><div class="num" id="dSaved">0</div><div>Saved spaces</div></div>
+    <div class="stat"><div class="num" id="dPlan">—</div><div>My plan</div></div>
+  </div>
+  <div class="two-col">
+    <div>
+      <h2>My bookings</h2>
+      <div id="myBookings"><p class="muted">Loading…</p></div>
+      <p><a class="btn" href="spaces.html">Book a space</a></p>
+      <h2 style="margin-top:36px">My saved spaces</h2>
+      <div id="mySaved"></div>
+    </div>
+    <aside class="panel">
+      <h3>Account</h3>
+      <dl style="display:grid;grid-template-columns:auto 1fr;gap:6px 14px">
+        <dt class="muted">Name</dt><dd id="pName" style="margin:0;font-weight:600"></dd>
+        <dt class="muted">Email</dt><dd id="pEmail" style="margin:0;font-weight:600"></dd>
+        <dt class="muted">Plan</dt><dd id="pPlan" style="margin:0;font-weight:600"></dd>
+        <dt class="muted">Member since</dt><dd id="pSince" style="margin:0;font-weight:600"></dd>
+      </dl>
+      <button class="btn secondary" id="dashSignOut" type="button" style="width:100%;margin-top:8px">Sign out</button>
+      <hr style="border:0;border-top:1px solid var(--line);margin:22px 0">
+      <h3>Change password</h3>
+      <form id="pwForm" novalidate>
+        <div class="alert error" id="pwErrors" role="alert"></div>
+        <div class="alert ok" id="pwOk" role="status"></div>
+        <div class="field"><label for="pwCurrent">Current password</label><input id="pwCurrent" type="password" autocomplete="current-password"></div>
+        <div class="field"><label for="pwNext">New password</label><input id="pwNext" type="password" autocomplete="new-password"></div>
+        <div class="field"><label for="pwConfirm">New password again</label><input id="pwConfirm" type="password" autocomplete="new-password"></div>
+        <button class="btn" type="submit" style="width:100%">Update password</button>
+        <p class="hint">Changing your password signs out your other sessions.</p>
+      </form>
+    </aside>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap cols">
+  <div><strong>Haven Desk Collective</strong><p>Fictional coworking loft — a portfolio project, not a real business.</p></div>
+  <div><p><a href="index.html">Home</a><br><a href="spaces.html">Spaces &amp; pricing</a></p></div>
+  <div><p>Open Mon–Sat, 8 AM – 6 PM. Closed Sundays.</p></div>
+</div></footer>
+
+<script src="app.js"></script>
+<script>
+function showTab(which) {
+  const signin = which === "signin";
+  $("#tabSignin").setAttribute("aria-selected", signin); $("#tabSignup").setAttribute("aria-selected", !signin);
+  $("#signinForm").hidden = !signin; $("#signupForm").hidden = signin;
+}
+function fieldErr(input, errEl, msg) {
+  if (msg) { input.classList.add("invalid"); errEl.textContent = msg; errEl.classList.add("show"); }
+  else { input.classList.remove("invalid"); errEl.classList.remove("show"); }
+}
+function pwStrength(pw) {
+  let score = 0;
+  if (pw.length >= 8) score++;
+  if (pw.length >= 12) score++;
+  if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+  if (/\d/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  return score;
+}
+async function renderDashboard() {
+  const u = Auth.user; if (!u) return;
+  $("#authSection").hidden = true; $("#dashSection").hidden = false;
+  $("#dashHello").textContent = "Welcome back, " + u.name.split(" ")[0];
+  $("#dashSub").textContent = MODE === "live" ? "You are signed in against the real server — these bookings live in the SQLite database." : "Demo mode: you are signed in against this browser's local accounts store.";
+  $("#pName").textContent = u.name; $("#pEmail").textContent = u.email;
+  $("#pPlan").textContent = `${u.planLabel} (${Math.round(u.discount * 100)}% booking saving)`;
+  $("#pSince").textContent = u.createdAt ? new Date(u.createdAt).toLocaleDateString(undefined, { month: "long", year: "numeric" }) : "—";
+  $("#dPlan").textContent = u.planLabel;
+  const mine = await Bookings.mine();
+  const active = mine.filter(b => b.status === "active");
+  $("#dBookings").textContent = active.length;
+  $("#dHours").textContent = active.reduce((s, b) => s + b.hours, 0);
+  const favs = favorites(); $("#dSaved").textContent = favs.length;
+  const box = $("#myBookings");
+  if (!mine.length) box.innerHTML = `<div class="empty">No bookings yet — your first desk is waiting on the <a href="spaces.html">spaces page</a>.</div>`;
+  else box.innerHTML = mine.map(b => `
+    <div class="booking-item">
+      <div class="row"><strong>${escapeHtml(b.space_name)}</strong><span class="tag ${b.status === "active" ? "mint" : ""}">${escapeHtml(b.status)}</span></div>
+      <p class="meta muted">${fmtDate(b.date)} · ${fmtHour(b.start_hour)} · ${b.hours}h · ${(b.extras || []).map(x => EXTRAS[x] ? EXTRAS[x].label : x).join(", ") || "No extras"} · <strong>${money(b.total)}</strong> · Ref ${escapeHtml(b.ref)}</p>
+      ${b.status === "active" ? `<button class="btn small secondary" data-cancel="${escapeHtml(b.ref)}" type="button">Cancel booking</button>` : ""}
+    </div>`).join("");
+  $$("[data-cancel]").forEach(btn => btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    const r = await Bookings.cancel(btn.dataset.cancel);
+    if (!r.ok) alert((r.errors || ["Cancel failed."]).join(" "));
+    renderDashboard();
+  }));
+  const saved = $("#mySaved");
+  if (!favs.length) saved.innerHTML = `<div class="empty">No saved spaces yet — tap the heart on any space and it will live here.</div>`;
+  else saved.innerHTML = favs.map(id => {
+    const sp = FALLBACK_SPACES.find(s => s.id === id);
+    return sp ? `<div class="booking-item"><div class="row"><strong>${escapeHtml(sp.name)}</strong><a class="btn small" href="spaces.html#${sp.id}">Book</a></div><p class="meta muted">${escapeHtml(sp.type)} · ${money(sp.price)}/hr</p></div>` : "";
+  }).join("");
+}
+
+window.pageInit = async () => {
+  $("#tabSignin").addEventListener("click", () => showTab("signin"));
+  $("#tabSignup").addEventListener("click", () => showTab("signup"));
+  if (location.hash === "#signup") showTab("signup");
+  const pending = sessionStorage.getItem("haven_pending_space");
+  if (pending && !Auth.user) { const n = $("#returnNotice"); n.hidden = false; n.textContent = "Sign in or create an account to finish booking that space — we will take you straight back to it."; }
+  /* Dashboard handlers attach in both states (the section unhides later).
+     Sign out switches sections in place — no reload needed. */
+  $("#dashSignOut").addEventListener("click", async () => {
+    await Auth.signout(); renderAuthNav();
+    $("#dashSection").hidden = true; $("#authSection").hidden = false;
+    showTab("signin");
+  });
+  $("#pwForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const errBox = $("#pwErrors"), okBox = $("#pwOk");
+    errBox.classList.remove("show"); okBox.classList.remove("show");
+    const r = await Auth.changePassword({ current: $("#pwCurrent").value, next: $("#pwNext").value, confirm: $("#pwConfirm").value });
+    if (!r.ok) { errBox.innerHTML = r.errors.map(escapeHtml).join("<br>"); errBox.classList.add("show"); return; }
+    okBox.textContent = "Password updated."; okBox.classList.add("show"); e.target.reset();
+  });
+  $("#fillDemo").addEventListener("click", () => { $("#siEmail").value = DEMO.email; $("#siPassword").value = DEMO.password; });
+  $("#siShow").addEventListener("change", e => { $("#siPassword").type = e.target.checked ? "text" : "password"; });
+  $("#suPassword").addEventListener("input", e => {
+    const s = pwStrength(e.target.value);
+    const bar = $("#pwBar");
+    bar.style.width = (s * 20) + "%";
+    bar.style.background = s <= 2 ? "var(--danger)" : s === 3 ? "var(--butter)" : "var(--mint)";
+    $("#pwHint").textContent = ["Too short — add more characters.", "Getting there…", "Getting there…", "Good password.", "Strong password.", "Excellent password."][s];
+  });
+
+  $("#signinForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const box = $("#signinErrors"); box.classList.remove("show");
+    const r = await Auth.signin({ email: $("#siEmail").value, password: $("#siPassword").value });
+    if (!r.ok) { box.innerHTML = r.errors.map(escapeHtml).join("<br>"); box.classList.add("show"); return; }
+    afterAuth();
+  });
+  $("#signupForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const name = $("#suName"), email = $("#suEmail"), pw = $("#suPassword"), cf = $("#suConfirm"), terms = $("#suTerms");
+    let ok = true;
+    fieldErr(name, $("#errSuName"), name.value.trim() ? "" : "Tell us your name."); if (!name.value.trim()) ok = false;
+    fieldErr(email, $("#errSuEmail"), emailOk(email.value) ? "" : "Enter a valid email address."); if (!emailOk(email.value)) ok = false;
+    const pwErrs = passwordErrors(pw.value);
+    fieldErr(pw, $("#errSuPw"), pwErrs[0] || ""); if (pwErrs.length) ok = false;
+    fieldErr(cf, $("#errSuConfirm"), pw.value === cf.value ? "" : "Passwords do not match."); if (pw.value !== cf.value) ok = false;
+    fieldErr(terms, $("#errSuTerms"), terms.checked ? "" : "Please agree to the house rules."); if (!terms.checked) ok = false;
+    if (!ok) return;
+    const box = $("#signupErrors"); box.classList.remove("show");
+    const r = await Auth.signup({ name: name.value, email: email.value, password: pw.value, confirm: cf.value, plan: $("#suPlan").value });
+    if (!r.ok) { box.innerHTML = r.errors.map(escapeHtml).join("<br>"); box.classList.add("show"); return; }
+    afterAuth();
+  });
+  function afterAuth() {
+    renderAuthNav();
+    const target = sessionStorage.getItem("haven_pending_space");
+    if (target) { location.href = "spaces.html#" + target; return; }
+    renderDashboard();
+  }
+  /* Attach every handler first, THEN paint the right starting state —
+     so signing out and back in works without any reload. */
+  if (Auth.user) await renderDashboard();
+};
+</script>
+</body>
+</html>
