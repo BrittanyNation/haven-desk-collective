@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spaces &amp; pricing — Haven Desk Collective</title>
+<meta name="description" content="Browse 8 Haven Desk Collective spaces: filters, search, sorting, details, favorites, and members-only booking with a live price summary.">
+<meta property="og:title" content="Spaces &amp; pricing — Haven Desk Collective">
+<meta property="og:description" content="Eight coworking spaces with working filters, favorites, and a booking flow that opens only after sign-in.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://brittanynation.github.io/haven-desk-collective/og-image.png">
+<meta property="og:url" content="https://brittanynation.github.io/haven-desk-collective/spaces.html">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23232946'/><text x='50' y='68' font-size='56' text-anchor='middle' fill='%23FFC857'>H</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="mode-banner" id="modeBanner">Checking connection…</div>
+<header class="site"><div class="wrap nav">
+  <a class="logo" href="index.html">Haven <span>Desk</span> Collective</a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="spaces.html" aria-current="page">Spaces &amp; pricing</a>
+    <a href="account.html">My account</a>
+    <span id="authNav"></span>
+  </nav>
+</div></header>
+
+<main class="wrap">
+<section style="padding-bottom:10px">
+  <div class="section-head"><h1 style="font-size:2rem">Spaces &amp; pricing</h1>
+  <p>Eight spaces, honest hourly prices, satisfaction in the star rating. Save the ones you like, and book when you are ready.</p></div>
+  <div class="alert info" id="gateNotice" role="status"></div>
+  <div class="toolbar" role="group" aria-label="Filter by type">
+    <button class="chip" data-type="all" aria-pressed="true">All</button>
+    <button class="chip" data-type="pod" aria-pressed="false">Pods</button>
+    <button class="chip" data-type="desk" aria-pressed="false">Desks</button>
+    <button class="chip" data-type="meeting" aria-pressed="false">Meeting rooms</button>
+    <button class="chip" data-type="studio" aria-pressed="false">Studios</button>
+    <span style="flex:1"></span>
+    <input id="searchBox" type="search" placeholder="Search spaces…" aria-label="Search spaces" style="width:220px">
+    <select id="sortSel" aria-label="Sort spaces" style="width:200px">
+      <option value="popular">Most booked</option>
+      <option value="price-asc">Price: low to high</option>
+      <option value="price-desc">Price: high to low</option>
+      <option value="name">Name A–Z</option>
+    </select>
+  </div>
+  <p class="muted" id="resultCount" aria-live="polite"></p>
+  <div class="grid" id="spaceGrid"></div>
+  <div class="empty" id="emptyState" hidden><strong>No spaces match.</strong><br>Try a different type or a shorter search.</div>
+</section>
+
+<section style="padding-top:12px" id="bookingSection">
+  <div class="two-col">
+    <div class="panel">
+      <h2>Book a space</h2>
+      <p class="muted" id="bookingGateText">Members can book below.</p>
+      <form id="bookForm" novalidate>
+        <div class="field"><label for="bkSpace">Space</label><select id="bkSpace"></select></div>
+        <div class="field"><label for="bkDate">Date</label><input type="date" id="bkDate"><p class="error-text" id="errDate"></p></div>
+        <div class="field"><label>Start time <span class="muted">(open 8 AM – 6 PM; struck-through times taken)</span></label>
+          <div class="slot-grid" id="slotGrid"></div><p class="error-text" id="errSlot"></p></div>
+        <div class="field"><label for="bkHours">How many hours?</label>
+          <select id="bkHours"><option value="1">1 hour</option><option value="2" selected>2 hours</option><option value="3">3 hours</option><option value="4">4 hours</option></select>
+          <p class="error-text" id="errHours"></p></div>
+        <div class="field"><label>Extras (flat per booking)</label>
+          <label class="check"><input type="checkbox" class="bkExtra" value="locker"> Day locker — $4</label>
+          <label class="check"><input type="checkbox" class="bkExtra" value="monitor"> Extra monitor — $6</label>
+          <label class="check"><input type="checkbox" class="bkExtra" value="coffee-pass"> Coffee pass — $5</label>
+          <label class="check"><input type="checkbox" class="bkExtra" value="guest-pass"> Guest pass — $8</label>
+        </div>
+        <div class="alert error" id="bookErrors" role="alert"></div>
+        <button class="btn mint" type="submit" id="bookSubmit" style="width:100%">Confirm booking</button>
+      </form>
+      <div id="bookDone" hidden>
+        <p class="confirm-badge" aria-hidden="true">🎉</p>
+        <h3>Booked — see you at the loft.</h3>
+        <p id="bookDoneText"></p>
+        <p><a class="btn" href="account.html">See it on my dashboard</a> <button class="btn secondary" id="bookAgain" type="button">Book another space</button></p>
+      </div>
+    </div>
+    <aside class="panel summary" aria-label="Booking summary">
+      <h3>Your summary</h3>
+      <dl>
+        <dt>Space</dt><dd id="sumSpace">—</dd>
+        <dt>When</dt><dd id="sumWhen">—</dd>
+        <dt>Rate</dt><dd id="sumRate">—</dd>
+        <dt>Extras</dt><dd id="sumExtras">$0</dd>
+        <dt id="sumDiscLabel">Member saving</dt><dd id="sumDisc">—</dd>
+        <dt>Tax (7%)</dt><dd id="sumTax">—</dd>
+      </dl>
+      <dl class="total"><dt>Total due today</dt><dd id="sumTotal">—</dd></dl>
+      <p class="muted" id="sumNote">Sign in and your plan's saving appears here.</p>
+    </aside>
+  </div>
+</section>
+</main>
+
+<div class="modal-back" id="detailBack" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+  <div class="modal">
+    <h2 id="detailTitle">Space</h2>
+    <p class="meta muted" id="detailMeta"></p>
+    <p id="detailBlurb"></p>
+    <p><strong>In the space:</strong> <span id="detailPerks"></span></p>
+    <p class="price" id="detailPrice" style="font-family:'Fraunces',serif;font-size:1.3rem;color:var(--indigo)"></p>
+    <p><button class="btn" id="detailBook" type="button">Book this space</button> <button class="btn secondary" id="detailClose" type="button">Close</button></p>
+  </div>
+</div>
+
+<footer><div class="wrap cols">
+  <div><strong>Haven Desk Collective</strong><p>Fictional coworking loft — a portfolio project, not a real business.</p></div>
+  <div><p><a href="index.html">Home</a><br><a href="account.html">Sign in / create account</a></p></div>
+  <div><p>Open Mon–Sat, 8 AM – 6 PM. Closed Sundays.</p></div>
+</div></footer>
+
+<script src="app.js"></script>
+<script>
+let SPACES = [];
+let state = { type: "all", q: "", sort: "popular", selectedHour: null, detailId: null };
+
+async function loadSpaces() {
+  try {
+    const r = await api("/api/spaces");
+    if (r.ok) return r.data.spaces;
+    throw new Error("fallback");
+  } catch { MODE = "fallback"; setBanner(); return [...FALLBACK_SPACES]; }
+}
+function visibleSpaces() {
+  let list = SPACES.filter(s => (state.type === "all" || s.type === state.type) &&
+    (s.name + " " + s.blurb + " " + s.type).toLowerCase().includes(state.q.toLowerCase()));
+  if (state.sort === "price-asc") list.sort((a, b) => a.price - b.price);
+  else if (state.sort === "price-desc") list.sort((a, b) => b.price - a.price);
+  else if (state.sort === "name") list.sort((a, b) => a.name.localeCompare(b.name));
+  else list.sort((a, b) => b.bookings - a.bookings);
+  return list;
+}
+function renderGrid() {
+  const list = visibleSpaces();
+  const favs = favorites();
+  $("#spaceGrid").innerHTML = list.map(sp => `
+    <article class="card" id="card-${sp.id}">
+      <div class="row" style="margin:0"><span class="tag">${escapeHtml(sp.type)}</span>
+      <button class="heart" data-fav="${sp.id}" aria-pressed="${favs.includes(sp.id)}" aria-label="Save ${escapeHtml(sp.name)}" title="Save to my spaces">${favs.includes(sp.id) ? "❤️" : "🤍"}</button></div>
+      <h3>${escapeHtml(sp.name)}</h3>
+      <p class="meta">${sp.seats} seat${sp.seats === 1 ? "" : "s"} · ★ ${sp.rating} · ${sp.bookings.toLocaleString()} bookings</p>
+      <p>${escapeHtml(sp.blurb)}</p>
+      <div class="row"><span class="price">${money(sp.price)} <small>/ hour</small></span>
+      <span><button class="btn small secondary" data-details="${sp.id}" type="button">Details</button>
+      <button class="btn small" data-book="${sp.id}" type="button">Book</button></span></div>
+    </article>`).join("");
+  $("#resultCount").textContent = `Showing ${list.length} of ${SPACES.length} spaces`;
+  $("#emptyState").hidden = list.length > 0;
+  $$("[data-fav]").forEach(b => b.addEventListener("click", () => {
+    if (!Auth.user) { showGate("Saving spaces uses your account — sign in or create one and your hearts will be here when you get back."); location.href = "account.html"; return; }
+    toggleFavorite(b.dataset.fav); renderGrid();
+  }));
+  $$("[data-details]").forEach(b => b.addEventListener("click", () => openDetail(b.dataset.details)));
+  $$("[data-book]").forEach(b => b.addEventListener("click", () => startBooking(b.dataset.book)));
+}
+function showGate(msg) {
+  const el = $("#gateNotice"); el.textContent = msg; el.classList.add("show");
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+function startBooking(spaceId) {
+  if (!Auth.user) {
+    /* Remember the intent, send them through the door, bring them back. */
+    sessionStorage.setItem("haven_pending_space", spaceId);
+    showGate("Booking is members-only. Sign in or create a free account — we will bring you straight back to this space.");
+    setTimeout(() => { location.href = "account.html"; }, 900);
+    return;
+  }
+  $("#bkSpace").value = spaceId;
+  updateSlotsAndSummary();
+  $("#bookingSection").scrollIntoView({ behavior: "smooth" });
+}
+function openDetail(id) {
+  const sp = SPACES.find(s => s.id === id); if (!sp) return;
+  state.detailId = id;
+  $("#detailTitle").textContent = sp.name;
+  $("#detailMeta").textContent = `${sp.type} · ${sp.seats} seats · ★ ${sp.rating} · ${sp.bookings.toLocaleString()} bookings`;
+  $("#detailBlurb").textContent = sp.blurb;
+  $("#detailPerks").textContent = sp.perks;
+  $("#detailPrice").textContent = money(sp.price) + " / hour";
+  $("#detailBack").classList.add("open");
+}
+function closeDetail() { $("#detailBack").classList.remove("open"); }
+
+async function updateSlotsAndSummary() {
+  const sp = SPACES.find(s => s.id === $("#bkSpace").value) || SPACES[0];
+  const date = $("#bkDate").value || todayStr();
+  const hours = Number($("#bkHours").value);
+  const taken = Auth.user ? await Bookings.bookedOut(sp.id, date) : new Set([...Array(10)].map((_, i) => slotBookedOut(sp.id, date, 8 + i) ? 8 + i : null).filter(x => x !== null));
+  const grid = $("#slotGrid");
+  grid.innerHTML = "";
+  for (let h = 8; h <= 17; h++) {
+    const btn = document.createElement("button");
+    btn.type = "button"; btn.className = "slot"; btn.textContent = fmtHour(h);
+    btn.setAttribute("aria-pressed", state.selectedHour === h ? "true" : "false");
+    if (taken.has(h)) btn.disabled = true;
+    btn.addEventListener("click", () => { state.selectedHour = h; updateSlotsAndSummary(); });
+    grid.appendChild(btn);
+  }
+  const extras = $$(".bkExtra").filter(c => c.checked).map(c => c.value);
+  const discount = Auth.user ? Auth.user.discount : 0;
+  const gross = hours * sp.price + extras.reduce((s, x) => s + EXTRAS[x].price, 0);
+  const total = priceFor(sp.price, hours, extras, discount);
+  const tax = Math.round((gross * (1 - discount)) * 0.07 * 100) / 100;
+  $("#sumSpace").textContent = sp.name;
+  $("#sumWhen").textContent = fmtDate(date) + (state.selectedHour !== null ? `, ${fmtHour(state.selectedHour)}` : "") + ` · ${hours}h`;
+  $("#sumRate").textContent = `${money(sp.price)} × ${hours}h = ${money(sp.price * hours)}`;
+  $("#sumExtras").textContent = money(extras.reduce((s, x) => s + EXTRAS[x].price, 0));
+  $("#sumDisc").textContent = discount ? "−" + money(Math.round(gross * discount * 100) / 100) + ` (${Auth.user.planLabel})` : "—";
+  $("#sumTax").textContent = money(tax);
+  $("#sumTotal").textContent = money(total);
+  $("#sumNote").textContent = Auth.user ? `Signed in as ${Auth.user.name} (${Auth.user.planLabel}).` : "Sign in and your plan's saving appears here.";
+}
+
+window.pageInit = async () => {
+  SPACES = await loadSpaces();
+  $("#bkSpace").innerHTML = SPACES.map(s => `<option value="${s.id}">${escapeHtml(s.name)} — ${money(s.price)}/hr</option>`).join("");
+  const dateInput = $("#bkDate"); dateInput.min = todayStr(); dateInput.value = todayStr();
+  $$(".chip").forEach(ch => ch.addEventListener("click", () => {
+    $$(".chip").forEach(c => c.setAttribute("aria-pressed", "false"));
+    ch.setAttribute("aria-pressed", "true"); state.type = ch.dataset.type; renderGrid();
+  }));
+  $("#searchBox").addEventListener("input", e => { state.q = e.target.value; renderGrid(); });
+  $("#sortSel").addEventListener("change", e => { state.sort = e.target.value; renderGrid(); });
+  ["bkSpace", "bkDate", "bkHours"].forEach(id => $("#" + id).addEventListener("change", () => { if (id !== "bkHours") state.selectedHour = null; updateSlotsAndSummary(); }));
+  $$(".bkExtra").forEach(c => c.addEventListener("change", updateSlotsAndSummary));
+  $("#detailClose").addEventListener("click", closeDetail);
+  $("#detailBack").addEventListener("click", e => { if (e.target === e.currentTarget) closeDetail(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeDetail(); });
+  $("#detailBook").addEventListener("click", () => { closeDetail(); startBooking(state.detailId); });
+
+  if (!Auth.user) {
+    $("#bookingGateText").innerHTML = "You are browsing as a guest. <a href='account.html'>Sign in or create a free account</a> to book a space.";
+    $("#bookSubmit").textContent = "Sign in to book";
+  }
+  renderGrid();
+  await updateSlotsAndSummary();
+
+  /* Coming back from sign-in with an intent, or linked to a space? */
+  const pending = sessionStorage.getItem("haven_pending_space");
+  const hashId = location.hash.replace("#", "");
+  const target = pending || (SPACES.some(s => s.id === hashId) ? hashId : null);
+  if (target && Auth.user) { sessionStorage.removeItem("haven_pending_space"); startBooking(target); }
+  else if (target) startBooking(target);
+
+  $("#bookForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    if (!Auth.user) { startBooking($("#bkSpace").value); return; }
+    const errs = [];
+    const date = $("#bkDate").value, hours = Number($("#bkHours").value);
+    const errDate = $("#errDate"), errSlot = $("#errSlot"), errHours = $("#errHours");
+    [errDate, errSlot, errHours].forEach(el => { el.textContent = ""; el.classList.remove("show"); });
+    if (!date) { errDate.textContent = "Pick a date."; errDate.classList.add("show"); errs.push(1); }
+    else {
+      const d = new Date(date + "T12:00:00");
+      if (date < todayStr()) { errDate.textContent = "That date is in the past."; errDate.classList.add("show"); errs.push(1); }
+      if (d.getDay() === 0) { errDate.textContent = "Closed on Sundays — pick another day."; errDate.classList.add("show"); errs.push(1); }
+    }
+    if (state.selectedHour === null) { errSlot.textContent = "Pick a start time."; errSlot.classList.add("show"); errs.push(1); }
+    if (state.selectedHour !== null && state.selectedHour + hours > 18) { errHours.textContent = "That runs past closing (6 PM) — start earlier or book fewer hours."; errHours.classList.add("show"); errs.push(1); }
+    const box = $("#bookErrors"); box.classList.remove("show"); box.innerHTML = "";
+    if (errs.length) return;
+    const extras = $$(".bkExtra").filter(c => c.checked).map(c => c.value);
+    const r = await Bookings.create({ spaceId: $("#bkSpace").value, date, startHour: state.selectedHour, hours, extras });
+    if (!r.ok) { box.innerHTML = (r.errors || ["Booking failed."]).map(x => escapeHtml(x)).join("<br>"); box.classList.add("show"); return; }
+    const b = r.data;
+    $("#bookForm").hidden = true;
+    $("#bookDone").hidden = false;
+    $("#bookDoneText").innerHTML = `<strong>${escapeHtml(b.space_name || b.spaceName || "")}</strong> · ${fmtDate(b.date)} at ${fmtHour(b.start_hour ?? b.startHour)} for ${b.hours} hour${b.hours === 1 ? "" : "s"} · Total <strong>${money(b.total)}</strong><br>Your booking reference is <strong>${escapeHtml(b.ref)}</strong> — it is saved on your dashboard${MODE === "fallback" ? " (demo mode: stored in this browser)" : ""}.`;
+    $("#bookAgain").addEventListener("click", () => { $("#bookForm").hidden = false; $("#bookDone").hidden = true; state.selectedHour = null; updateSlotsAndSummary(); });
+    const s = await loadSpaces(); SPACES = s; renderGrid();
+  });
+};
+</script>
+</body>
+</html>
