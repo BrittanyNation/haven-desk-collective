@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Haven Desk Collective — A coworking loft where members belong</title>
+<meta name="description" content="Haven Desk Collective is a fictional neighborhood coworking loft. Browse desks, pods, meeting rooms and studios, create a member account, and book only when signed in.">
+<meta property="og:title" content="Haven Desk Collective — Coworking, with a members door">
+<meta property="og:description" content="A fictional coworking loft with real sign-up, sign-in, sessions and members-only booking — built in HTML, CSS, JavaScript, Node and SQLite.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://brittanynation.github.io/haven-desk-collective/og-image.png">
+<meta property="og:url" content="https://brittanynation.github.io/haven-desk-collective/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23232946'/><text x='50' y='68' font-size='56' text-anchor='middle' fill='%23FFC857'>H</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="mode-banner" id="modeBanner">Checking connection…</div>
+<header class="site"><div class="wrap nav">
+  <a class="logo" href="index.html">Haven <span>Desk</span> Collective</a>
+  <nav>
+    <a href="index.html" aria-current="page">Home</a>
+    <a href="spaces.html">Spaces &amp; pricing</a>
+    <a href="account.html">My account</a>
+    <span id="authNav"></span>
+  </nav>
+</div></header>
+
+<main>
+<section class="hero"><div class="wrap">
+  <p class="tag mint" style="font-size:.85rem">Fictional coworking loft · Members book, guests browse</p>
+  <h1>Work somewhere that<br><em>knows your name.</em></h1>
+  <p>A converted warehouse loft with pods for deep work, desks by the window, rooms for the whole team, and a studio that is already set up to record. Create a free account, and the booking door opens — only members can reserve a space.</p>
+  <div class="cta-row">
+    <a class="btn mint" href="account.html#signup">Create a free account</a>
+    <a class="btn secondary" href="spaces.html">Browse the spaces</a>
+  </div>
+</div></section>
+
+<div class="wrap stat-band" aria-label="Collective at a glance">
+  <div class="stat"><div class="num" id="statSpaces">8</div><div>Spaces to book</div></div>
+  <div class="stat"><div class="num" id="statMembers">—</div><div>Member accounts</div></div>
+  <div class="stat"><div class="num" id="statBookings">—</div><div>Bookings made</div></div>
+  <div class="stat"><div class="num">Mon–Sat</div><div>Open 8 AM – 6 PM, closed Sundays</div></div>
+</div>
+
+<section><div class="wrap">
+  <div class="section-head"><h2>How it works</h2><p>Three honest steps. The account is the door — everything behind it belongs to the member who signed in.</p></div>
+  <div class="grid">
+    <article class="card"><span class="tag">Step 1</span><h3>Create an account</h3><p>Pick a plan — Day Tripper, Regular, or Resident. Your password is hashed on the server, never stored as text.</p></article>
+    <article class="card"><span class="tag">Step 2</span><h3>Sign in, stay signed in</h3><p>A session token keeps you signed in for 7 days on this device. Signing out deletes it — that token stops working immediately.</p></article>
+    <article class="card"><span class="tag">Step 3</span><h3>Book your space</h3><p>Members pick a date, a start time, and up to 4 hours. Members see their discount live, then get a booking reference they can cancel.</p></article>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div class="section-head"><h2>Most-loved spaces</h2><p>The three most-booked corners of the loft, straight from the data.</p></div>
+  <div class="grid" id="featuredGrid"><p class="muted">Loading spaces…</p></div>
+  <p style="margin-top:18px"><a class="btn" href="spaces.html">See all 8 spaces</a></p>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap two-col">
+  <div>
+    <h2>Plans, in the open</h2>
+    <table aria-label="Membership plans">
+      <tr><th>Plan</th><th>Monthly</th><th>Booking discount</th></tr>
+      <tr><td><strong>Day Tripper</strong></td><td>$0</td><td>None — pay as you go</td></tr>
+      <tr><td><strong>Regular</strong></td><td>$149</td><td>15% off every booking</td></tr>
+      <tr><td><strong>Resident</strong></td><td>$289</td><td>25% off every booking</td></tr>
+    </table>
+    <p class="muted">Every booking also adds 7% tax, shown as its own line in the summary — no surprise totals.</p>
+    <h2 style="margin-top:32px">Questions, answered plainly</h2>
+    <details open><summary>Do I need an account to look around?</summary><p>No. Browsing, searching, and saving spaces is open to everyone. You only sign in to book — that is the whole point of the members door.</p></details>
+    <details><summary>What if I forget my password?</summary><p>This demo includes a password-change form on your dashboard while signed in. A real reset-by-email flow is the natural next step after this project, not a faked one.</p></details>
+    <details><summary>Can someone else cancel my booking?</summary><p>No. The server checks that the booking belongs to the signed-in account before it cancels — a different member's token gets a 403.</p></details>
+  </div>
+  <aside class="panel">
+    <h3>The Loft Letter</h3>
+    <p>One short email a month: new spaces, member hours, and what is happening in the loft. No spam, unsubscribe any time.</p>
+    <form id="newsForm" novalidate>
+      <div class="field"><label for="newsEmail">Email</label><input id="newsEmail" type="email" placeholder="you@example.com" required><p class="error-text" id="newsError"></p></div>
+      <button class="btn" type="submit" style="width:100%">Subscribe</button>
+      <div class="alert ok" id="newsOk" role="status"></div>
+    </form>
+  </aside>
+</div></section>
+</main>
+
+<footer><div class="wrap cols">
+  <div><strong>Haven Desk Collective</strong><p>A fictional coworking loft, built as a portfolio project. No real business, no real bookings.</p></div>
+  <div><p><a href="spaces.html">Spaces &amp; pricing</a><br><a href="account.html">Sign in / create account</a></p></div>
+  <div><p>Open Mon–Sat, 8 AM – 6 PM.<br>Closed Sundays.<br>Try the demo account: demo@haven.example / HavenDemo1</p></div>
+</div></footer>
+<script src="app.js"></script>
+<script>
+window.pageInit = async () => {
+  function renderFeatured(list) {
+    $("#featuredGrid").innerHTML = list.slice(0, 3).map(sp => `
+      <article class="card">
+        <span class="tag">${escapeHtml(sp.type)}</span>
+        <h3>${escapeHtml(sp.name)}</h3>
+        <p class="meta">${sp.seats} seat${sp.seats === 1 ? "" : "s"} · ★ ${sp.rating} · ${sp.bookings.toLocaleString()} bookings</p>
+        <p>${escapeHtml(sp.blurb)}</p>
+        <div class="row"><span class="price">${money(sp.price)} <small>/ hour</small></span><a class="btn small" href="spaces.html#${sp.id}">Book this space</a></div>
+      </article>`).join("");
+  }
+  /* Home page stats + featured spaces, in whichever mode we are in. */
+  try {
+    const r = await api("/api/stats");
+    if (r.ok) {
+      $("#statSpaces").textContent = r.data.spaces;
+      $("#statMembers").textContent = r.data.members;
+      $("#statBookings").textContent = Number(r.data.bookings).toLocaleString();
+      const s = await api("/api/spaces");
+      if (s.ok) { renderFeatured(s.data.spaces); return; }
+    }
+    throw new Error("fallback");
+  } catch { /* fall through to fallback data below */ }
+  MODE = "fallback"; setBanner();
+  $("#statSpaces").textContent = FALLBACK_SPACES.length;
+  $("#statMembers").textContent = (fbUsers().length + 40).toLocaleString();
+  $("#statBookings").textContent = (FALLBACK_SPACES.reduce((a, x) => a + x.bookings, 0) + 40).toLocaleString();
+  renderFeatured([...FALLBACK_SPACES].sort((a, b) => b.bookings - a.bookings));
+  $("#newsForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const input = $("#newsEmail"), ok = $("#newsOk"), err = $("#newsError");
+    const email = input.value.trim();
+    if (!emailOk(email)) { input.classList.add("invalid"); err.textContent = "Enter a valid email address."; err.classList.add("show"); ok.classList.remove("show"); return; }
+    input.classList.remove("invalid"); err.classList.remove("show");
+    const key = "haven_newsletter";
+    const subs = JSON.parse(localStorage.getItem(key) || "[]");
+    if (subs.includes(email.toLowerCase())) ok.textContent = "You are already on the list — welcome back.";
+    else { subs.push(email.toLowerCase()); localStorage.setItem(key, JSON.stringify(subs)); ok.textContent = "Subscribed — the next Loft Letter is on its way."; }
+    ok.classList.add("show"); input.value = "";
+  });
+};
+</script>
+</body>
+</html>
